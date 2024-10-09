@@ -125,3 +125,5 @@ D:\ASP.NET Project\SecureWebApp\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlit
 D:\ASP.NET Project\SecureWebApp\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 D:\ASP.NET Project\SecureWebApp\obj\Debug\net8.0\SecureWebApp.csproj.AssemblyReference.cache
 D:\ASP.NET Project\SecureWebApp\obj\Debug\net8.0\SecureWe.218E8616.Up2Date
+D:\ASP.NET Project\SecureWebApp\obj\Debug\net8.0\SecureWebApp.sourcelink.json
+D:\ASP.NET Project\SecureWebApp\bin\Debug\net8.0\BCrypt.Net-Next.dll
