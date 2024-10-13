@@ -1,6 +1,6 @@
 using System;
 using SecureWebApp.Models;
-using BC=BCrypt.Net.BCrypt;
+using BC = BCrypt.Net.BCrypt;
 
 namespace SecureWebApp.Data;
 
@@ -30,7 +30,7 @@ public class UserData : IUser
     {
         try
         {
-            user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             _db.Users.Add(user);
             _db.SaveChanges();
             return user;
@@ -39,6 +39,19 @@ public class UserData : IUser
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+        }
+    }
+    public void UpdateUserPassword(User user)
+    {
+        var existingUser = _db.Users.FirstOrDefault(u => u.Username == user.Username);
+        if (existingUser != null)
+        {
+            existingUser.Password = user.Password; // New hashed password
+            _db.SaveChanges();
+        }
+        else
+        {
+            throw new Exception("User not found");
         }
     }
 }

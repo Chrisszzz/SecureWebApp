@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SecureWebApp.Data;
@@ -93,7 +94,7 @@ namespace SecureWebApp.Controllers
                         {
                             IsPersistent = loginViewModel.RememberLogin
                         });
-                        return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             catch (System.Exception ex)
@@ -101,6 +102,42 @@ namespace SecureWebApp.Controllers
                 ViewBag.Error = ex.Message;
             }
             return View(loginViewModel);
+        }
+
+        // GET: /Account/ChangePassword
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        // POST: /Account/ChangePassword
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Logic to change the password
+                // Assuming you have a method to get the current user (adjust according to your user management)
+
+                // Get the currently logged-in user (if using Identity)
+                // var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                // var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                // Simulating the change password logic
+                var user = _userData.Login(new User { Username = User.Identity.Name, Password = model.CurrentPassword });
+
+                if (user != null)
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+                    _userData.UpdateUserPassword(user); // Implement this method in IUser
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Current password is incorrect.");
+            }
+            return View(model);
         }
     }
 }
